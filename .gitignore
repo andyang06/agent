@@ -37,4 +37,12 @@ wheels/
 .DS_Store
 Thumbs.db
 
+# Node.js
+node_modules/
 
+# Database files
+day-2/db/
+*.sqlite3
+
+# Generated files
+day-2/blog-posts/

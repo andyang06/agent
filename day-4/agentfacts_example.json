@@ -1,0 +1,103 @@
+{
+  "id": "nanda:550e8400-e29b-41d4-a716-446655440000",
+  "agent_name": "urn:agent:nanda:YOUR_USERNAME",
+  "label": "YOUR_AGENT_NAME",
+  "description": "YOUR_AGENT_DESCRIPTION",
+  "version": "1.0.0",
+  "documentationUrl": "https://YOUR_RAILWAY_URL.up.railway.app/docs",
+  "jurisdiction": "USA",
+  
+  "provider": {
+    "name": "YOUR_NAME",
+    "url": "YOUR_WEBSITE_URL",
+    "did": "did:web:YOUR_WEBSITE_URL"
+  },
+  
+  "endpoints": {
+    "static": [
+      "https://YOUR_RAILWAY_URL.up.railway.app/a2a"
+    ],
+    "adaptive_resolver": {
+      "url": "https://YOUR_RAILWAY_URL.up.railway.app/a2a",
+      "policies": [
+        "load"
+      ]
+    }
+  },
+  
+  "capabilities": {
+    "modalities": [
+      "text"
+    ],
+    "streaming": false,
+    "batch": false,
+    "authentication": {
+      "methods": [
+        "none"
+      ],
+      "requiredScopes": []
+    }
+  },
+  
+  "skills": [
+    {
+      "id": "question_answering",
+      "description": "Answer questions using memory and context",
+      "inputModes": ["text"],
+      "outputModes": ["text"],
+      "supportedLanguages": ["en"],
+      "latencyBudgetMs": 5000
+    },
+    {
+      "id": "calculation",
+      "description": "Perform mathematical calculations",
+      "inputModes": ["text"],
+      "outputModes": ["text"],
+      "supportedLanguages": ["en"],
+      "latencyBudgetMs": 1000
+    },
+    {
+      "id": "web_search",
+      "description": "Search the web and websites for information",
+      "inputModes": ["text"],
+      "outputModes": ["text"],
+      "supportedLanguages": ["en"],
+      "latencyBudgetMs": 10000
+    },
+    {
+      "id": "file_reading",
+      "description": "Read and analyze file contents",
+      "inputModes": ["text"],
+      "outputModes": ["text"],
+      "supportedLanguages": ["en"],
+      "latencyBudgetMs": 3000
+    }
+  ],
+  
+  "evaluations": {
+    "performanceScore": 4.5,
+    "availability90d": "99.0%",
+    "lastAudited": "2026-01-24T12:00:00Z",
+    "auditTrail": null,
+    "auditorID": "Self-Reported v1.0"
+  },
+  
+  "telemetry": {
+    "enabled": true,
+    "retention": "7d",
+    "sampling": 1.0,
+    "metrics": {
+      "latency_p95_ms": 2000,
+      "throughput_rps": 10,
+      "error_rate": 0.01,
+      "availability": "99.0%"
+    }
+  },
+  
+  "certification": {
+    "level": "development",
+    "issuer": "YOUR_NAME",
+    "issuanceDate": "2026-01-24T12:00:00Z",
+    "expirationDate": "2027-01-24T12:00:00Z"
+  }
+}

@@ -1,9 +1,19 @@
 """
-Day 3: Agent REST API with FastAPI
-===================================
+Day 3: Deploy Your Agent with Memory to Railway
+================================================
 
-This creates a REST API for your agent that can be deployed to the cloud.
-Anyone can now interact with your agent via HTTP!
+This wraps your Day 2 agent (with memory and tools) in a FastAPI REST API
+so anyone can interact with it via HTTP from anywhere in the world!
+
+What's FastAPI?
+- A Python web framework that creates REST APIs
+- Turns your local Python code into a web service
+- Allows HTTP requests (like from curl, browsers, or other apps)
+
+Architecture:
+- Service 1: ChromaDB (persistent memory storage)
+- Service 2: This FastAPI app (your agent)
+- They communicate via Railway's private network
 """
 
 from fastapi import FastAPI, HTTPException
@@ -14,6 +24,10 @@ from dotenv import load_dotenv
 import os
 
 from crewai import Agent, Task, Crew, LLM
+from crewai.tools import BaseTool
+from crewai_tools import DirectoryReadTool, FileReadTool, SerperDevTool, WebsiteSearchTool, YoutubeVideoSearchTool
+from pydantic import Field
+from typing import Type
 
 # Load environment variables
 load_dotenv()
@@ -24,62 +38,89 @@ load_dotenv()
 
 app = FastAPI(
     title="Personal Agent Twin API",
-    description="REST API for interacting with your personal AI agent",
+    description="Your Day 2 agent with memory and tools, now accessible via REST API!",
     version="1.0.0"
 )
 
-# Enable CORS (allows requests from web browsers)
+# Enable CORS (allows browser requests)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify allowed domains
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # ==============================================================================
-# Request/Response Models
+# Request/Response Models (API Input/Output)
 # ==============================================================================
 
 class QueryRequest(BaseModel):
-    """Input model for agent queries"""
+    """What the API expects when you send a question"""
     question: str
     user_id: str = "anonymous"
-    max_turns: int = 5
-    
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "question": "What are your interests?",
-                "user_id": "user123",
-                "max_turns": 5
-            }
-        }
 
 class QueryResponse(BaseModel):
-    """Output model for agent responses"""
+    """What the API returns after processing"""
     answer: str
-    agent_id: str
     timestamp: str
-    processing_time: float = 0.0
+    processing_time: float
 
 class HealthResponse(BaseModel):
     """Health check response"""
     status: str
-    model: str
-    version: str
-    timestamp: str
-
-class InfoResponse(BaseModel):
-    """Agent information"""
-    name: str
-    version: str
-    capabilities: list[str]
-    creator: str
-    description: str
+    memory_enabled: bool
+    tools_count: int
 
 # ==============================================================================
-# Agent Setup
+# Tools Setup (from Day 2)
+# ==============================================================================
+
+# Tool 1: Calculator (custom tool from Day 2)
+class CalculatorInput(BaseModel):
+    expression: str = Field(..., description="Mathematical expression to evaluate")
+
+class CalculatorTool(BaseTool):
+    name: str = "calculator"
+    description: str = "Performs mathematical calculations"
+    args_schema: Type[BaseModel] = CalculatorInput
+    
+    def _run(self, expression: str) -> str:
+        try:
+            result = eval(expression, {"__builtins__": {}}, {})
+            return f"Result: {result}"
+        except Exception as e:
+            return f"Error: {str(e)}"
+
+calculator_tool = CalculatorTool()
+
+# Tool 2: File Reading
+file_tool = FileReadTool()
+
+# Tool 3: Website Search (RAG)
+web_rag_tool = WebsiteSearchTool()
+
+# Tool 4: YouTube Search (RAG)
+youtube_tool = YoutubeVideoSearchTool()
+
+# Tool 5: Web Search (optional - requires SERPER_API_KEY)
+search_tool = None
+if os.getenv('SERPER_API_KEY'):
+    search_tool = SerperDevTool()
+
+# Collect all tools
+available_tools = [
+    calculator_tool,
+    file_tool,
+    web_rag_tool,
+    youtube_tool
+]
+
+if search_tool:
+    available_tools.append(search_tool)
+
+# ==============================================================================
+# Agent Setup (from Day 2, with memory!)
 # ==============================================================================
 
 # Initialize LLM
@@ -88,24 +129,41 @@ llm = LLM(
     temperature=0.7,
 )
 
-# Create agent
-agent_twin = Agent(
-    role="Personal Digital Twin API",
-    goal="Answer questions accurately via REST API",
+# Create agent with memory and tools
+my_agent_twin = Agent(
+    role="Personal Digital Twin with Memory and Tools",
+    
+    goal="Answer questions about me, remember conversations, and use tools when needed",
     
     backstory="""
-    You are a personal AI agent accessible via REST API.
+    You are the digital twin of a student learning AI and CrewAI.
     
-    About your creator:
-    - Student in MIT IAP NANDA course
-    - Learning AI agents and deployment
-    - Interested in technology and innovation
-    - Building cool projects with CrewAI
+    Here's what you know about me:
+    - I'm a student in the MIT IAP NANDA course
+    - I'm learning about AI agents, memory systems, and deployment
+    - I love experimenting with new AI technologies
+    - My favorite programming language is Python
+    - I'm building this as part of a 5-day intensive course
     
-    You provide helpful, accurate responses through an API interface.
-    Keep responses concise but informative.
+    MEMORY CAPABILITIES:
+    You have four types of memory:
+    1. Short-Term Memory (RAG): Recent conversation context
+    2. Long-Term Memory: Important facts across sessions
+    3. Entity Memory (RAG): People, places, concepts
+    4. Contextual Memory: Combines all memory types
+    
+    TOOL CAPABILITIES:
+    - FileReadTool: Read files
+    - WebsiteSearchTool: Search websites (RAG)
+    - YoutubeVideoSearchTool: Search video transcripts (RAG)
+    - SerperDevTool: Web search (if API key configured)
+    - Calculator: Math operations
+    
+    Use tools when you need external information. Use memory to provide
+    personalized, context-aware responses.
     """,
     
+    tools=available_tools,
     llm=llm,
     verbose=False,  # Set to True for debugging
 )
@@ -114,21 +172,22 @@ agent_twin = Agent(
 # API Endpoints
 # ==============================================================================
 
-@app.get("/", tags=["Root"])
+@app.get("/")
 async def root():
-    """Root endpoint - API information"""
+    """Root endpoint - shows API information"""
     return {
-        "message": "Personal Agent Twin API",
+        "message": "🤖 Personal Agent Twin API - Day 3",
         "version": "1.0.0",
+        "memory_enabled": True,
+        "tools_enabled": len(available_tools),
         "endpoints": {
-            "health": "/health",
-            "info": "/info",
-            "query": "/query (POST)"
-        },
-        "docs": "/docs"
+            "health": "GET /health",
+            "query": "POST /query",
+            "docs": "GET /docs"
+        }
     }
 
-@app.get("/health", response_model=HealthResponse, tags=["Status"])
+@app.get("/health", response_model=HealthResponse)
 async def health_check():
     """
     Health check endpoint
@@ -137,56 +196,51 @@ async def health_check():
     """
     return HealthResponse(
         status="healthy",
-        model="gpt-4o-mini",
-        version="1.0.0",
-        timestamp=datetime.now().isoformat()
+        memory_enabled=True,
+        tools_count=len(available_tools)
     )
 
-@app.get("/info", response_model=InfoResponse, tags=["Agent"])
-async def agent_info():
-    """
-    Get agent information
-    
-    Returns metadata about the agent and its capabilities.
-    """
-    return InfoResponse(
-        name="Personal Agent Twin",
-        version="1.0.0",
-        capabilities=["conversation", "memory", "tools", "api-access"],
-        creator="MIT IAP NANDA Student",
-        description="A personal AI agent that can answer questions about its creator"
-    )
-
-@app.post("/query", response_model=QueryResponse, tags=["Agent"])
+@app.post("/query", response_model=QueryResponse)
 async def query_agent(request: QueryRequest):
     """
-    Query the agent
+    Query the agent with memory and tools
     
-    Send a question to the agent and get a response.
+    This is the main endpoint! Send a question and get an answer.
+    The agent will:
+    - Remember previous conversations (if memory is working)
+    - Use tools when needed (calculator, web search, etc.)
+    - Provide personalized responses
     
-    Args:
-        request: QueryRequest with question and optional parameters
-        
-    Returns:
-        QueryResponse with the agent's answer
+    Example:
+        curl -X POST https://your-app.up.railway.app/query \\
+          -H "Content-Type: application/json" \\
+          -d '{"question": "What is 123 * 456?"}'
     """
     start_time = datetime.now()
     
     try:
         # Create task for this query
         task = Task(
-            description=f"Answer this question: {request.question}",
-            expected_output="A clear, concise answer",
-            agent=agent_twin,
+            description=f"""
+            Answer the following question: {request.question}
+            
+            Use your memory to recall relevant context.
+            Use your tools when you need external information or calculations.
+            Provide accurate, helpful responses.
+            """,
+            expected_output="A clear, context-aware answer using memory and tools as needed",
+            agent=my_agent_twin,
         )
         
-        # Create crew and execute
+        # Create crew with memory enabled
         crew = Crew(
-            agents=[agent_twin],
+            agents=[my_agent_twin],
             tasks=[task],
+            memory=True,  # This enables all 4 memory types!
             verbose=False,
         )
         
+        # Execute the crew
         result = crew.kickoff()
         
         # Calculate processing time
@@ -194,8 +248,7 @@ async def query_agent(request: QueryRequest):
         processing_time = (end_time - start_time).total_seconds()
         
         return QueryResponse(
-            answer=str(result),
-            agent_id="personal-agent-twin",
+            answer=str(result.raw),
             timestamp=end_time.isoformat(),
             processing_time=processing_time
         )
@@ -205,33 +258,6 @@ async def query_agent(request: QueryRequest):
             status_code=500,
             detail=f"Error processing query: {str(e)}"
         )
-
-@app.get("/stats", tags=["Status"])
-async def get_stats():
-    """
-    Get API statistics (optional endpoint)
-    
-    Returns basic statistics about API usage.
-    """
-    return {
-        "total_queries": "Not implemented",
-        "uptime": "Not implemented",
-        "average_response_time": "Not implemented",
-        "note": "Implement with a database for production use"
-    }
-
-# ==============================================================================
-# Error Handlers
-# ==============================================================================
-
-@app.exception_handler(404)
-async def not_found_handler(request, exc):
-    """Handle 404 errors"""
-    return {
-        "error": "Endpoint not found",
-        "message": "This endpoint does not exist. Check /docs for available endpoints.",
-        "available_endpoints": ["/", "/health", "/info", "/query"]
-    }
 
 # ==============================================================================
 # Startup Event
@@ -244,8 +270,9 @@ async def startup_event():
     print("🚀 Personal Agent Twin API Starting...")
     print("="*70)
     print(f"\n✅ Model: {llm.model}")
+    print(f"✅ Memory: Enabled (4 types)")
+    print(f"✅ Tools: {len(available_tools)} tools loaded")
     print("✅ Agent: Initialized")
-    print("✅ Endpoints: Ready")
     print("\n📚 Documentation: http://localhost:8000/docs")
     print("="*70 + "\n")
 
@@ -253,30 +280,20 @@ async def startup_event():
 # Run Instructions
 # ==============================================================================
 """
-LOCAL DEVELOPMENT:
+LOCAL TESTING:
     uvicorn main:app --reload
     
-    Then visit:
-    - http://localhost:8000 (API root)
-    - http://localhost:8000/docs (Interactive documentation)
-    - http://localhost:8000/health (Health check)
+    Then test:
+    curl -X POST http://localhost:8000/query \\
+      -H "Content-Type: application/json" \\
+      -d '{"question": "What is 50 * 50?"}'
 
-PRODUCTION DEPLOYMENT:
-    Render: Automatically detected
-    Railway: Automatically detected
-    Manual: uvicorn main:app --host 0.0.0.0 --port $PORT
-
-TESTING:
-    # Health check
-    curl http://localhost:8000/health
-    
-    # Query agent
-    curl -X POST http://localhost:8000/query \
-      -H "Content-Type: application/json" \
-      -d '{"question": "What are you learning?"}'
+RAILWAY DEPLOYMENT:
+    Railway automatically detects and runs this with:
+    uvicorn main:app --host 0.0.0.0 --port $PORT
 """
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

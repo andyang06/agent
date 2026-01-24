@@ -1,10 +1,6 @@
 """
-Interactive Personal Agent Twin - BONUS VERSION! 🚀
-====================================================
+Interactive Personal Agent Twin 
 
-This is an enhanced version that lets you have a conversation with your agent twin!
-
-Students: Try this after you understand main.py
 """
 
 from crewai import Agent, Task, Crew, LLM

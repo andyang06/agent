@@ -2,20 +2,26 @@
 # Python Dependencies for Day 2: Memory + MCP Tools
 # ==============================================================================
 
-# Core CrewAI with tools support
+# Core CrewAI with tools support and memory
 crewai[tools]>=0.86.0
 
 # Environment management
 python-dotenv>=1.0.0
 
-# MCP Tools (uncomment the ones you want to use)
-# crewai-tools[spotify]>=0.1.0
-# crewai-tools[web]>=0.1.0
-# crewai-tools[github]>=0.1.0
+# MCP support
+mcp>=1.0.0
 
-# Memory backends (optional - for advanced users)
-# redis>=5.0.0
+# CrewAI Tools Collection
+crewai-tools>=0.12.0
 
-# Common tool dependencies
+# Individual tool dependencies
+serper>=0.1.0  # For SerperDevTool (web search)
+beautifulsoup4>=4.12.0  # For WebsiteSearchTool
+lxml>=4.9.0  # For WebsiteSearchTool
+youtube-transcript-api>=0.6.0  # For YouTubeVideoSearchTool
+
+# Common dependencies
 requests>=2.31.0
+pydantic>=2.0.0
+
 

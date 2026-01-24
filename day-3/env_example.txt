@@ -1,16 +1,18 @@
 # ==============================================================================
-# Environment Variables - Day 3: Deployment
+# Environment Variables for Day 3 - Railway Deployment
 # ==============================================================================
 
-# OpenAI API Key (required)
-OPENAI_API_KEY=your-api-key-here
+# REQUIRED: OpenAI API Key (from Day 1-2)
+OPENAI_API_KEY=sk-your-openai-api-key-here
 
-# Optional: Other API keys from Day 2
-SPOTIFY_CLIENT_ID=your-spotify-client-id
-SPOTIFY_CLIENT_SECRET=your-spotify-client-secret
-BRAVE_API_KEY=your-brave-api-key
+# OPTIONAL: Serper API Key for web search tool
+# Get free key at: https://serper.dev
+SERPER_API_KEY=your-serper-api-key-here
 
-# Production settings
-# PORT=8000  # Usually set by hosting provider
-# ENVIRONMENT=production
+# ChromaDB Connection (Railway will auto-configure these)
+# Only needed if you're running locally and want to connect to Railway ChromaDB
+# CHROMA_HOST=Chroma.railway.internal
+# CHROMA_PORT=8000
 
+# Port (Railway sets this automatically, default 8000 for local)
+# PORT=8000

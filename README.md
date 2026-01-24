@@ -45,6 +45,10 @@ Welcome to the MIT IAP NANDA course! Over 5 days, you'll progress from building 
 
 **Prerequisites:** Render account + GitHub connected
 
+**🎨 Bonus: [Chat Frontend](./frontend/)** - A simple Next.js chat interface where students can share and chat with each other's agents!
+
+**📦 Bonus: [Backend Registry](./backend/)** - Simple Express server to store and share all student agent URLs in one place!
+
 ---
 
 ### [Day 4: Team Coordination Protocol](./day-4/)
@@ -97,6 +101,23 @@ Welcome to the MIT IAP NANDA course! Over 5 days, you'll progress from building 
    Follow the README in each day's folder!
 
 3. **Progress through each day** at your own pace, or follow along with the course schedule.
+
+4. **Optional: Use the Full Chat System** (after Day 3):
+   
+   See [FULL_SETUP.md](./FULL_SETUP.md) for complete instructions!
+   
+   **Quick version:**
+   ```bash
+   # Terminal 1: Backend
+   cd backend
+   npm install && npm run dev
+   
+   # Terminal 2: Frontend
+   cd frontend
+   npm install && npm run dev
+   ```
+   
+   Now students can share and chat with each other's agents!
 
 ## 📚 Resources
 
