@@ -118,13 +118,4 @@ if __name__ == "__main__":
     print(result)
     print("\n")
     
-    # 🎯 BONUS CHALLENGE for students:
-    # Can you make this interactive? Try using input() to ask custom questions!
-    # Example:
-    # while True:
-    #     user_question = input("\nAsk a question about me (or 'quit' to exit): ")
-    #     if user_question.lower() == 'quit':
-    #         break
-    #     result = my_crew.kickoff(inputs={"question": user_question})
-    #     print(f"\n🤖 Answer: {result}\n")
-
+    
