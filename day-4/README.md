@@ -1,22 +1,22 @@
-# Day 4: Agent-to-Agent Communication (A2A)
+# Day 4: A2A Communication Protocol
 
-**Goal:** Add A2A (Agent-to-Agent) communication to your agent, allowing it to message and collaborate with other agents!
+**Goal:** Implement Agent-to-Agent (A2A) communication protocol, allowing agents to discover and message each other
 
 ---
 
-## ⚡ Quick Update from Day 3
+## Quick Update from Day 3
 
 Already deployed yesterday? Here's your simple checklist:
 
-### ✅ Step-by-Step Deployment
+### Step-by-Step Deployment
 
 1. **Edit Your Agent Info** (in `main.py`, lines 108-116)
    ```python
-   MY_AGENT_USERNAME = "your-username"      # 👈 Change this
-   MY_AGENT_NAME = "Your Agent Name"        # 👈 Change this
-   MY_AGENT_DESCRIPTION = "What your agent does"  # 👈 Change this
-   MY_AGENT_PROVIDER = "Your Name"          # 👈 Change this
-   MY_AGENT_PROVIDER_URL = "https://your-website.com"  # 👈 Change this
+   MY_AGENT_USERNAME = "your-username"      # Change this
+   MY_AGENT_NAME = "Your Agent Name"        # Change this
+   MY_AGENT_DESCRIPTION = "What your agent does"  # Change this
+   MY_AGENT_PROVIDER = "Your Name"          # Change this
+   MY_AGENT_PROVIDER_URL = "https://your-website.com"  # Change this
    ```
    These are NOT secrets - they're public info shown in AgentFacts!
 
@@ -26,7 +26,7 @@ Already deployed yesterday? Here's your simple checklist:
    railway link  # Link to your existing project from Day 3
    railway up    # Deploys the new code with your info
    ```
-   Your existing `OPENAI_API_KEY` environment variable is still there from Day 3 ✅
+   Your existing `OPENAI_API_KEY` environment variable is still there from Day 3
 
 3. **Get Your URL**
    ```bash
@@ -65,35 +65,35 @@ Already deployed yesterday? Here's your simple checklist:
    ```
 
 5. **Register in Central Registry** (Important for A2A!)
-   - Go to: `https://nanda-testbed-production.up.railway.app`
+   - Go to: `https://nest.projectnanda.org`
    - Click "Add Agent"
    - Enter your agent info (username, name, URL, description)
    - Your agent will now automatically discover other registered agents!
 
 6. **Done!** Your agent now has:
-   - ✅ A2A messaging at `/a2a`
-   - ✅ AgentFacts at `/agentfacts`
-   - ✅ Automatic agent discovery via central registry
-   - ✅ All Day 3 features (memory, tools)
+   - A2A messaging at `/a2a`
+   - AgentFacts at `/agentfacts`
+   - Automatic agent discovery via central registry
+   - All Day 3 features (memory, tools)
 
-**Need more details?** See full guide below ⬇️
+**Need more details?** See full guide below
 
 ---
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
-- **What is A2A?** How agents communicate with each other
+- **What is A2A?** Agent-to-Agent communication protocol
 - **Message Routing:** Using `@agent-id` syntax to route messages
-- **Agent Discovery:** Using AgentFacts for agent discovery
+- **Agent Discovery:** Using AgentFacts for capability sharing
 - **Cross-Agent Collaboration:** Agents working together on tasks
 
 ---
 
-## 📚 Understanding A2A
+## Understanding A2A Communication Protocol
 
 ### What is A2A (Agent-to-Agent Communication)?
 
-A2A allows agents to:
+A2A is a communication protocol that allows agents to:
 - **Discover each other** - Find other agents and their capabilities
 - **Send messages** - Direct communication between agents
 - **Collaborate** - Work together on complex tasks
@@ -117,7 +117,7 @@ This implementation is inspired by the [NEST repository](https://github.com/proj
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
                     ┌──────────────────────────────────────┐
@@ -159,7 +159,7 @@ This implementation is inspired by the [NEST repository](https://github.com/proj
 └─────────────────────────────────────┘
 ```
 
-### ⚠️ Important: Two Endpoints for Different Purposes
+### Important: Two Endpoints for Different Purposes
 
 1. **`POST /query`** (from Day 3) - Direct queries to YOUR agent
    ```bash
@@ -172,25 +172,25 @@ This implementation is inspired by the [NEST repository](https://github.com/proj
    ```
    **Must include `@agent-id` or you'll get an error!**
 
-### 🌐 Central Registry
+### Central Registry
 
 All agents are registered in a central registry at:
-- **URL:** `https://nanda-testbed-production.up.railway.app`
-- **API:** `https://nanda-testbed-production.up.railway.app/api/agents`
+- **URL:** `https://nest.projectnanda.org`
+- **API:** `https://nest.projectnanda.org/api/agents`
 
 **Benefits:**
-- ✅ Single source of truth for all agents
-- ✅ Automatic agent discovery on startup
-- ✅ No manual registration between agents
-- ✅ Easy to add new agents to the network
+- Single source of truth for all agents
+- Automatic agent discovery on startup
+- No manual registration between agents
+- Easy to add new agents to the network
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### For Railway Deployment (You Already Have Day 3 Running)
 
-**See the "Quick Update from Day 3" section at the top!** ⬆️
+**See the "Quick Update from Day 3" section at the top!**
 
 ### For Local Testing (Optional)
 
@@ -216,60 +216,7 @@ http://localhost:8000/agentfacts
 
 ---
 
-## 🧪 Testing Your Deployment
-
-### Quick Test Checklist
-
-After deploying, test these endpoints:
-
-```bash
-# 1. Health check
-curl https://YOUR_URL.up.railway.app/health
-
-# 2. AgentFacts (discovery)
-curl https://YOUR_URL.up.railway.app/agentfacts
-
-# 3. Direct A2A message (to your own agent)
-curl -X POST https://YOUR_URL.up.railway.app/a2a \
-  -H "Content-Type: application/json" \
-  -d '{
-    "content": {
-      "text": "What is 2+2?",
-      "type": "text"
-    },
-    "role": "user",
-    "conversation_id": "test123"
-  }'
-
-# 4. A2A routing (message another agent)
-curl -X POST https://YOUR_URL.up.railway.app/a2a \
-  -H "Content-Type: application/json" \
-  -d '{
-    "content": {
-      "text": "@other-agent Can you help with this?",
-      "type": "text"
-    },
-    "role": "user",
-    "conversation_id": "test456"
-  }'
-
-# 5. Standard query (from Day 3)
-curl -X POST https://YOUR_URL.up.railway.app/query \
-  -H "Content-Type: application/json" \
-  -d '{"question": "Hello!"}'
-```
-
-### Run Test Suite
-
-```bash
-# Update BASE_URL in test_a2a.py
-# Then run:
-python test_a2a.py
-```
-
----
-
-## 🧪 Testing A2A Communication
+## Testing A2A Communication
 
 ### Test 1: Check Your Agent Info
 
@@ -280,7 +227,7 @@ curl http://localhost:8000/
 **Expected response:**
 ```json
 {
-  "message": "🤖 Personal Agent Twin API with A2A - Day 4",
+  "message": "Personal Agent Twin API with A2A - Day 4",
   "agent_id": "personal-agent-twin",
   "agent_name": "Personal Agent Twin",
   "a2a_enabled": true,
@@ -316,7 +263,7 @@ curl -X POST "http://localhost:8000/agents/register?agent_id=test-agent&agent_ur
 **Expected response:**
 ```json
 {
-  "message": "✅ Agent 'test-agent' registered successfully",
+  "message": "Agent 'test-agent' registered successfully",
   "agent_id": "test-agent",
   "agent_url": "http://example.com/a2a",
   "total_known_agents": 1
@@ -349,7 +296,7 @@ curl -X POST http://localhost:8000/a2a \
 
 ---
 
-## 📝 How It Works
+## How It Works
 
 ### 1. Message Format (NEST-style)
 
@@ -367,9 +314,9 @@ curl -X POST http://localhost:8000/a2a \
 ### 2. Agent Mentions with `@agent-id`
 
 When you include `@agent-id` in the message:
-- ✅ `@furniture-expert What sofa should I buy?`
-- ✅ `@travel-agent Plan a trip to Paris`
-- ✅ `@code-helper Debug my Python script`
+- `@furniture-expert What sofa should I buy?`
+- `@travel-agent Plan a trip to Paris`
+- `@code-helper Debug my Python script`
 
 The agent:
 1. Extracts the agent ID (`furniture-expert`)
@@ -394,7 +341,7 @@ KNOWN_AGENTS = {
 
 ---
 
-## 🔍 Code Deep Dive
+## Code Deep Dive
 
 ### Key Components
 
@@ -460,11 +407,11 @@ async def a2a_endpoint(message: A2AMessage):
 
 ---
 
-## 🚢 Deploy to Railway
+## Deploy to Railway
 
 ### If You Already Deployed Day 3
 
-**Great!** See the "Quick Update from Day 3" section at the top. ⬆️
+**Great!** See the "Quick Update from Day 3" section at the top.
 
 Just run:
 ```bash
@@ -521,7 +468,6 @@ Add the new environment variables in Railway Dashboard, and you're done!
      }'
    
    # Test A2A routing (requires @agent-id)
-   # ⚠️ This will ERROR without @agent-id - that's expected!
    curl -X POST https://YOUR_URL.up.railway.app/a2a \
      -H "Content-Type: application/json" \
      -d '{
@@ -534,12 +480,12 @@ Add the new environment variables in Railway Dashboard, and you're done!
      }'
    ```
 
-### 🌐 Register Your Agent in the Central Registry (IMPORTANT!)
+### Register Your Agent in the Central Registry (IMPORTANT!)
 
 **After deployment**, register your agent so other agents can discover it!
 
 **Option A: Web Interface** (Easiest)
-1. Go to `https://nanda-testbed-production.up.railway.app`
+1. Go to `https://nest.projectnanda.org`
 2. Click **"Add Agent"**
 3. Fill in the form:
    - **Username**: Your `MY_AGENT_USERNAME` (e.g., `maria-agent`)
@@ -550,31 +496,31 @@ Add the new environment variables in Railway Dashboard, and you're done!
 
 **Option B: Using curl**
 ```bash
-curl -X POST https://nanda-testbed-production.up.railway.app/api/agents \
+curl -X POST https://nest.projectnanda.org/api/agents \
   -H "Content-Type: application/json" \
   -d '{
-    "username": "your-agent-username",
+    "agent_id": "your-agent-username",
     "name": "Your Agent Name",
-    "url": "https://YOUR_URL.up.railway.app",
+    "endpoint": "https://YOUR_URL.up.railway.app",
     "description": "What your agent specializes in"
   }'
 ```
 
 **What happens after registration?**
-- ✅ Your agent appears in the central registry
-- ✅ Other agents can discover and message your agent
-- ✅ Your agent automatically discovers other registered agents on startup
-- ✅ No manual agent registration needed anymore!
+- Your agent appears in the central registry
+- Other agents can discover and message your agent
+- Your agent automatically discovers other registered agents on startup
+- No manual agent registration needed anymore!
 
 **Check if registration worked:**
 ```bash
 # See all registered agents
-curl https://nanda-testbed-production.up.railway.app/api/agents
+curl https://nest.projectnanda.org/api/agents
 ```
 
 ---
 
-## 📋 AgentFacts: Agent Discovery
+## AgentFacts: Agent Discovery
 
 ### What is AgentFacts?
 
@@ -590,7 +536,7 @@ AgentFacts is like a "business card" for your agent. It tells other agents:
 curl https://YOUR_URL.up.railway.app/agentfacts
 ```
 
-You'll see JSON with all your agent's info - auto-generated from your `.env` variables!
+You'll see JSON with all your agent's info - auto-generated from your config!
 
 ### Share with Classmates
 
@@ -603,9 +549,9 @@ They can discover your agent's capabilities and connect to it!
 
 ---
 
-## 🔗 Connecting with Classmates
+## Connecting with Classmates
 
-### Automatic Agent Discovery! 🎉
+### Automatic Agent Discovery
 
 **Good news:** With the central registry, agents automatically discover each other! No manual registration needed.
 
@@ -614,12 +560,12 @@ They can discover your agent's capabilities and connect to it!
 **You deployed:**
 - Agent Username: `maria-agent`
 - URL: `https://maria-agent.railway.app`
-- **Registered in central registry ✅**
+- **Registered in central registry**
 
 **Classmate deployed:**
 - Agent Username: `john-agent`
 - URL: `https://john-agent.railway.app`
-- **Registered in central registry ✅**
+- **Registered in central registry**
 
 ### What Happens Automatically
 
@@ -631,12 +577,12 @@ When both agents are registered in the central registry:
 
 You'll see this in startup logs:
 ```
-🔍 Fetching agents from registry: https://nanda-testbed-production.up.railway.app/api/agents
-📥 Fetched 5 agents from registry
-   ✅ Registered: @john-agent -> https://john-agent.railway.app/a2a
-   ✅ Registered: @sarah-agent -> https://sarah-agent.railway.app/a2a
-   ✅ Registered: @mike-agent -> https://mike-agent.railway.app/a2a
-✅ Known Agents: 3
+Fetching agents from registry: https://nest.projectnanda.org/api/agents
+Fetched 5 agents from registry
+   Registered: @john-agent -> https://john-agent.railway.app/a2a
+   Registered: @sarah-agent -> https://sarah-agent.railway.app/a2a
+   Registered: @mike-agent -> https://mike-agent.railway.app/a2a
+Known Agents: 3
 ```
 
 ### Verify Discovery
@@ -644,7 +590,7 @@ You'll see this in startup logs:
 Check which agents are registered:
 ```bash
 # View all registered agents
-curl https://nanda-testbed-production.up.railway.app/api/agents
+curl https://nest.projectnanda.org/api/agents
 
 # Check what agents YOUR agent knows
 curl https://maria-agent.railway.app/agents
@@ -675,14 +621,14 @@ curl -X POST https://maria-agent.railway.app/a2a \
 5. John's agent responds
 6. Your agent returns John's response to you
 
-**Result:** Your agent acts as a router/proxy to John's agent! 🎉
+**Result:** Your agent acts as a router/proxy to John's agent!
 
-### ⚠️ What if I don't include @agent-id?
+### What if I don't include @agent-id?
 
 **You'll get an error!** This is by design.
 
 ```bash
-# ❌ This will FAIL
+# This will FAIL
 curl -X POST https://maria-agent.railway.app/a2a \
   -H "Content-Type: application/json" \
   -d '{
@@ -698,7 +644,7 @@ curl -X POST https://maria-agent.railway.app/a2a \
 **Response:**
 ```json
 {
-  "detail": "❌ ERROR: /a2a endpoint requires @agent-id for routing.\n\nYour message: 'What is 2+2?'\n\nThis endpoint is ONLY for agent-to-agent communication.\nYou must include @agent-id to route to another agent.\n\nFor direct queries to THIS agent, use POST /query instead."
+  "detail": "ERROR: /a2a endpoint requires @agent-id for routing.\n\nYour message: 'What is 2+2?'\n\nThis endpoint is ONLY for agent-to-agent communication.\nYou must include @agent-id to route to another agent.\n\nFor direct queries to THIS agent, use POST /query instead."
 }
 ```
 
@@ -707,7 +653,7 @@ curl -X POST https://maria-agent.railway.app/a2a \
 - For direct queries, use `/query` endpoint instead
 - No silent fallbacks - be explicit!
 
-### 📝 Logging
+### Logging
 
 All A2A messages are logged to `logs/a2a_messages.log`:
 
@@ -726,7 +672,7 @@ Check your logs to debug A2A routing!
 
 ---
 
-## 🌟 Use Cases
+## Use Cases
 
 ### 1. Multi-Agent Research Team
 
@@ -753,69 +699,7 @@ Student Agent → "@math-tutor Help with calculus"
 
 ---
 
-## 🎓 Differences: This vs Google A2A
-
-| Feature | This Implementation (NEST) | Google A2A Protocol |
-|---------|---------------------------|---------------------|
-| **Complexity** | Simple, easy to implement | Full specification, more complex |
-| **Message Format** | Simple JSON | JSON-RPC 2.0 |
-| **Agent Discovery** | Manual registration | Agent Cards (automated) |
-| **Task Management** | Direct messages | CreateTask, GetTaskStatus, etc. |
-| **Best For** | Learning, quick prototypes | Production, enterprise |
-
-**This implementation is perfect for:**
-- ✅ Learning A2A concepts
-- ✅ Quick prototyping
-- ✅ Small agent networks
-- ✅ Student projects
-
-**Google A2A is better for:**
-- Enterprise deployments
-- Complex workflows
-- Large agent networks
-- Full protocol compliance
-
----
-
-## 🧪 Testing Scripts
-
-We provide test scripts to help you understand and test the A2A behavior:
-
-### `test_a2a_strict.py` - Strict Mode Testing
-
-This script demonstrates the strict A2A behavior:
-- ✅ `/query` for direct questions
-- ❌ `/a2a` without @agent-id (shows error)
-- ✅ `/a2a` with @agent-id (routing works)
-- 📝 Shows how logs are generated
-
-**Run it:**
-```bash
-# Start your agent locally
-uvicorn main:app --reload
-
-# In another terminal
-python test_a2a_strict.py
-```
-
-**What it tests:**
-1. Direct query to `/query` endpoint (works)
-2. Message to `/a2a` without @agent-id (errors - expected!)
-3. Register a test agent
-4. Message to `/a2a` with @agent-id (works)
-5. Shows you where to check logs
-
-### `test_a2a.py` - Comprehensive Testing
-
-Full test suite covering all endpoints and scenarios.
-
-```bash
-python test_a2a.py
-```
-
----
-
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 ### Problem: AgentFacts shows wrong URL
 
@@ -825,7 +709,7 @@ python test_a2a.py
 
 ### Problem: Agent not found when routing
 
-**Symptom:** `❌ Agent 'xyz' not found`
+**Symptom:** `Agent 'xyz' not found`
 
 **Solution:** Register the agent first:
 ```bash
@@ -879,7 +763,7 @@ curl -X POST "https://your-url/agents/register?agent_id=xyz&agent_url=https://th
 
 ---
 
-## 📚 Resources
+## Resources
 
 - [NEST Repository](https://github.com/projnanda/NEST) - The inspiration for this implementation
 - [Google A2A Protocol](https://github.com/a2aproject/A2A) - Full A2A specification
@@ -887,7 +771,7 @@ curl -X POST "https://your-url/agents/register?agent_id=xyz&agent_url=https://th
 
 ---
 
-## ✅ Day 4 Checklist
+## Day 4 Checklist
 
 **Deployment:**
 - [ ] Edited agent info in `main.py` (lines 108-116)
@@ -915,24 +799,15 @@ curl -X POST "https://your-url/agents/register?agent_id=xyz&agent_url=https://th
 
 ---
 
-## 🚀 Next Steps
+## Next Steps
 
-### Day 5: Advanced Topics
+### Day 5: Coordination Protocol + Agent Battle
 
+- Implement advanced coordination protocols
 - Connect to NANDA registry
-- Add MCP (Model Context Protocol) support
-- Build multi-agent workflows
-- Add authentication and security
-
-### Bonus Challenges
-
-1. **Persistent Registry:** Store known agents in database
-2. **Agent Discovery:** Auto-discover agents from registry
-3. **Broadcast Messages:** Send to multiple agents at once
-4. **Conversation History:** Track multi-agent conversations
-5. **Agent Capabilities:** Share what each agent can do
+- Optimize your agent for the Agent Battle
+- Compete using the Agent Smart Score evaluation system
 
 ---
 
-**🎉 Congratulations!** Your agent can now talk to other agents! You've built a working A2A communication system.
-
+**Congratulations!** Your agent can now communicate with other agents using the A2A protocol!

@@ -1,6 +1,6 @@
 # Day 2: Memory and Tools
 
-**Goal:** Extend your Day 1 agent with memory capabilities and tool integration
+Goal: Extend your Day 1 agent with memory capabilities and tool integration
 
 ## What You'll Learn
 
@@ -10,7 +10,7 @@
 - Creating custom tools with BaseTool
 - Using RAG-based tools (WebsiteSearch, YouTubeVideoSearch)
 
-## Today's Objectives
+## Objectives
 
 - [ ] Enable memory in your agent
 - [ ] Add tools from CrewAI collection
@@ -321,7 +321,7 @@ rm -rf ~/Library/Application\ Support/day-2/
 
 ### Understanding Memory Storage
 
-**Important**: Memory is stored as vector embeddings, not plain text. You won't see your exact conversations in readable format. The embeddings are used for similarity search when the agent needs to recall information.
+Memory is stored as vector embeddings, not plain text. You won't see your exact conversations in readable format. The embeddings are used for similarity search when the agent needs to recall information.
 
 **Memory files contain**:
 - Vector embeddings of conversations
@@ -358,7 +358,7 @@ rm -rf ~/Library/Application\ Support/day-2/
 - [CrewAI Tools Collection](https://docs.crewai.com/tools)
 - [Serper API](https://serper.dev) - Free web search API
 
-## Day 2 Checklist
+## Checklist
 
 Before moving to Day 3:
 - [ ] Agent has memory enabled
@@ -372,7 +372,3 @@ Before moving to Day 3:
 ## Next Steps
 
 Ready for Day 3? Head to `../day-3/` to learn about deployment and production patterns.
-
----
-
-**Note**: This implementation follows the official CrewAI documentation for memory and tools. All features are based on CrewAI's standard API.

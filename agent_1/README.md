@@ -2,7 +2,7 @@
 
 Quick guide for testing two specialized agents communicating with each other!
 
-## 🤖 The Agents
+## The Agents
 
 **Agent 1 (Weather Predictor)**
 - Username: `agent_1`
@@ -16,7 +16,7 @@ Quick guide for testing two specialized agents communicating with each other!
 
 ---
 
-## 🚀 Quick Setup
+## Quick Setup
 
 ### 1. Deploy Both Agents
 ```bash
@@ -72,7 +72,7 @@ You should see each agent in the other's list!
 
 ---
 
-## 🧪 Demo Tests for Class
+## Demo Tests for Class
 
 ### Example 1: Weather Agent Asks About Robots
 **Scenario:** Weather agent needs to know about robots used in weather stations
@@ -172,7 +172,7 @@ curl -X POST https://agent1-production-78c0.up.railway.app/a2a \
 
 ---
 
-## 📊 Understanding the Response
+## Understanding the Response
 
 **Successful A2A routing looks like:**
 ```json
@@ -192,14 +192,14 @@ curl -X POST https://agent1-production-78c0.up.railway.app/a2a \
 ```json
 {
   "content": {
-    "text": "[Forwarded to @agent_2]\n\n❌ Agent 'agent_2' not found. Known agents: ['maria-agent']"
+    "text": "[Forwarded to @agent_2]\n\nAgent 'agent_2' not found. Known agents: ['maria-agent']"
   }
 }
 ```
 
 ---
 
-## 🎯 Class Demo Flow
+## Class Demo Flow
 
 ### 1. Show Agent Discovery (30 seconds)
 ```bash
@@ -223,22 +223,22 @@ Run Example 5 to show strict A2A behavior
 
 ---
 
-## 🔍 Checking Logs
+## Checking Logs
 
 In Railway Dashboard, check the logs to see:
 
 **Agent_1 logs:**
 ```
-📥 Fetched 5 agents from registry
-   ✅ Registered: @agent_2 -> https://agent2-production.up.railway.app/a2a
-🔀 Routing message to agent: agent_2
+Fetched 5 agents from registry
+   Registered: @agent_2 -> https://agent2-production.up.railway.app/a2a
+Routing message to agent: agent_2
 ```
 
 **Agent_2 logs:**
 ```
-📥 Fetched 5 agents from registry
-   ✅ Registered: @agent_1 -> https://agent1-production-78c0.up.railway.app/a2a
-💬 Processing message locally
+Fetched 5 agents from registry
+   Registered: @agent_1 -> https://agent1-production-78c0.up.railway.app/a2a
+Processing message locally
 ```
 
 **A2A message logs** (in `logs/a2a_messages.log`):
@@ -250,10 +250,10 @@ In Railway Dashboard, check the logs to see:
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Agents don't see each other
-**Problem:** `❌ Agent 'agent_2' not found`
+**Problem:** `Agent 'agent_2' not found`
 
 **Solution:**
 1. Check registry: `curl https://nanda-testbed-production.up.railway.app/api/agents`
@@ -270,7 +270,7 @@ In Railway Dashboard, check the logs to see:
 
 ---
 
-## 💡 Tips for Class Demo
+## Tips for Class Demo
 
 1. **Pre-register agents** before class to save time
 2. **Keep curl commands handy** in a text file for quick copy-paste
@@ -280,7 +280,7 @@ In Railway Dashboard, check the logs to see:
 
 ---
 
-## 🎓 Key Concepts to Highlight
+## Key Concepts to Highlight
 
 1. **Automatic Discovery** - Agents find each other via central registry
 2. **Specialization** - Each agent has domain expertise
@@ -290,9 +290,8 @@ In Railway Dashboard, check the logs to see:
 
 ---
 
-## 📚 Additional Resources
+## Additional Resources
 
 - Full documentation: `../day-4/README.md`
 - Central registry: `https://nanda-testbed-production.up.railway.app`
 - NEST A2A protocol: `https://github.com/projnanda/NEST`
-

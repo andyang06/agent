@@ -1,10 +1,10 @@
-# 🤖 MIT IAP NANDA - AI Agent Development Course
+# MIT IAP NANDA - AI Agent Development Course
 
 **5-Day Intensive Course on Building and Deploying AI Agents**
 
 Welcome to the MIT IAP NANDA course! Over 5 days, you'll progress from building a simple AI agent to deploying a sophisticated agent capable of competing in an agent battle.
 
-## 📅 Course Structure
+## Course Structure
 
 ### [Day 1: Agent Loop + AI Twin v0](./day-1/)
 **What You'll Build:** A simple agent loop (max 5 turns) and your first AI twin using CrewAI (no tools/memory yet)
@@ -33,60 +33,59 @@ Welcome to the MIT IAP NANDA course! Over 5 days, you'll progress from building 
 
 ---
 
-### [Day 3: Deploy + REST API + Testbed](./day-3/)
-**What You'll Build:** Deploy your agent on Render and expose it via REST API
+### [Day 3: Deploy on Railway + REST API](./day-3/)
+**What You'll Build:** Deploy your agent on Railway and expose it via REST API
 
 **Key Concepts:**
 - FastAPI integration
-- Cloud deployment (Render/Railway)
+- Cloud deployment on Railway
 - REST API design for agents
 - Testing in NANDA testbed
 - Environment variable management in production
 
-**Prerequisites:** Render account + GitHub connected
+**Prerequisites:** Railway account
 
-**🎨 Bonus: [Chat Frontend](./frontend/)** - A simple Next.js chat interface where students can share and chat with each other's agents!
-
-**📦 Bonus: [Backend Registry](./backend/)** - Simple Express server to store and share all student agent URLs in one place!
+**Bonus: [Chat Frontend](./frontend/)** - A simple Next.js chat interface where students can share and chat with each other's agents!
 
 ---
 
-### [Day 4: Team Coordination Protocol](./day-4/)
-**What You'll Build:** Multi-agent systems with coordination protocols
+### [Day 4: A2A Communication Protocol](./day-4/)
+**What You'll Build:** Agent-to-Agent (A2A) communication system
 
 **Key Concepts:**
-- Agent-to-agent (A2A) communication
-- Google A2A protocol
-- Coordination strategies (debate, consensus, hierarchical)
-- Multi-agent task decomposition
-- Merging agent outputs
+- Agent-to-agent (A2A) communication protocol
+- Message routing and agent discovery
+- AgentFacts for capability sharing
+- Cross-agent collaboration
+- Central registry integration
 
 **Prerequisites:** Working agents (local or deployed)
 
 ---
 
-### [Day 5: Final Submit + Agent Battle](./day-5/)
-**What You'll Build:** Polish your agent for the final battle!
+### [Day 5: Coordination Protocol + Agent Battle](./day-5/)
+**What You'll Build:** Advanced coordination and compete in the final agent battle
 
 **Key Concepts:**
+- Agent coordination protocols
+- Multi-agent task decomposition
 - Agent optimization strategies
 - Using advanced tools (web search, stock data, specialized APIs)
 - Memory optimization
 - Response speed vs. accuracy tradeoffs
-- Battle format and evaluation criteria
 
-**The Challenge:** Build the coolest, most capable agent possible! Agents will compete in:
-- Trivia across diverse topics (history, science, pop culture)
-- Web search challenges
-- Stock market analysis
-- Art and culture questions
-- And more...
+**The Challenge:** Build the most capable agent possible! Agents will be tested and evaluated using the Agent Smart Score system that measures:
+- Accuracy and correctness
+- Response speed and efficiency
+- Reasoning quality
+- Robustness across diverse topics
+- Collaboration capabilities
 
 **Prerequisites:** Deployed endpoint + consistent input/output format
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 1. **Clone this repository:**
    ```bash
@@ -104,38 +103,34 @@ Welcome to the MIT IAP NANDA course! Over 5 days, you'll progress from building 
 
 4. **Optional: Use the Full Chat System** (after Day 3):
    
-   See [FULL_SETUP.md](./FULL_SETUP.md) for complete instructions!
+   See interface folder for complete instructions!
    
    **Quick version:**
    ```bash
-   # Terminal 1: Backend
-   cd backend
-   npm install && npm run dev
-   
-   # Terminal 2: Frontend
-   cd frontend
+   cd interface
    npm install && npm run dev
    ```
    
    Now students can share and chat with each other's agents!
 
-## 📚 Resources
+## Resources
 
 - [CrewAI Documentation](https://docs.crewai.com/)
 - [Model Context Protocol Servers](https://github.com/modelcontextprotocol/servers)
-- [Render Deployment Guide](https://github.com/render-examples/fastapi)
+- [Railway Deployment Guide](https://docs.railway.app/)
 - [NANDA Platform](https://nanda.ai)
 
-## 🏆 Course Goals
+## Course Goals
 
 By the end of this course, you will:
-- ✅ Understand AI agent architectures
-- ✅ Build agents with memory and tools
-- ✅ Deploy production-ready agent APIs
-- ✅ Implement multi-agent coordination
-- ✅ Have a portfolio-worthy project on GitHub
+- Understand AI agent architectures
+- Build agents with memory and tools
+- Deploy production-ready agent APIs
+- Implement multi-agent coordination and communication protocols
+- Compete in the Agent Battle with Agent Smart Score evaluation
+- Have a portfolio-worthy project on GitHub
 
-## 💡 Tips for Success
+## Tips for Success
 
 1. **Start early each day** - Building agents takes time!
 2. **Experiment freely** - Try different approaches
@@ -143,12 +138,12 @@ By the end of this course, you will:
 4. **Test thoroughly** - Agents can behave unexpectedly
 5. **Have fun** - AI agents are exciting technology!
 
-## 📝 License
+## License
 
 MIT License - Feel free to use this for learning!
 
 ---
 
-**Built with ❤️ for MIT IAP 2026**
+**Built for MIT IAP 2026**
 
 *Powered by [CrewAI](https://crewai.com) and [NANDA](https://nanda.ai)*

@@ -1,10 +1,8 @@
 # Day 3: Deploy Your Agent to Railway
 
-**Goal:** Deploy your Day 2 agent (with memory and tools) to the cloud using Railway, making it accessible via REST API from anywhere!
+Goal: Deploy your Day 2 agent (with memory and tools) to the cloud using Railway, making it accessible via REST API from anywhere.
 
----
-
-## ⚡ Quick Start (5 Steps)
+## Quick Start (5 Steps)
 
 ```bash
 # 1. Deploy
@@ -25,11 +23,7 @@ railway domain
 curl https://your-url.up.railway.app/health
 ```
 
-**See detailed instructions below!**
-
----
-
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - **What is FastAPI?** How to turn Python code into a web service
 - **What is REST API?** How to make your agent accessible via HTTP
@@ -37,9 +31,7 @@ curl https://your-url.up.railway.app/health
 - **Memory Persistence:** How to keep ChromaDB working in production
 - **Microservices:** How to connect multiple services (agent + database)
 
----
-
-## 📚 Understanding FastAPI
+## Understanding FastAPI
 
 ### What is FastAPI?
 
@@ -58,10 +50,10 @@ Anyone → Internet → HTTP Request → FastAPI → Agent → Response
 ### Why Do We Need It?
 
 Without FastAPI, your agent only runs locally. With FastAPI:
-- ✅ Anyone can use your agent via HTTP requests
-- ✅ Works from terminal, browser, or other apps
-- ✅ Can be integrated into websites or mobile apps
-- ✅ Industry-standard way to expose AI services
+- Anyone can use your agent via HTTP requests
+- Works from terminal, browser, or other apps
+- Can be integrated into websites or mobile apps
+- Industry-standard way to expose AI services
 
 ### How Does It Work?
 
@@ -77,11 +69,9 @@ async def query_agent(request: QueryRequest):
 curl -X POST https://your-app.com/query -d '{"question": "Hello"}'
 ```
 
----
+## Architecture Overview
 
-## 🏗️ Architecture Overview
-
-We'll deploy **one service** with persistent storage:
+We'll deploy one service with persistent storage:
 
 ```
 ┌─────────────────────────────────┐
@@ -107,14 +97,12 @@ We'll deploy **one service** with persistent storage:
 ```
 
 **Why this approach?**
-- **Simple:** One service to manage
-- **Persistent:** Railway Volume keeps memory across restarts
-- **Cost-effective:** Single service = lower costs
-- **Perfect for learning:** Focus on deployment basics
+- One service to manage
+- Railway Volume keeps memory across restarts
+- Cost-effective: Single service = lower costs
+- Focus on deployment basics
 
----
-
-## 🚀 Deployment Steps
+## Deployment Steps
 
 ### Prerequisites
 
@@ -128,18 +116,6 @@ We'll deploy **one service** with persistent storage:
    npm install -g @railway/cli
    ```
 3. **OpenAI API Key:** From Day 1-2
-
----
-
-## 📋 Deployment Steps (Simple!)
-
-**What you'll do:**
-1. Deploy your agent → Creates one service on Railway
-2. Add environment variables → OPENAI_API_KEY
-3. Add a volume → Makes memory persistent
-4. Done! → Agent works with memory
-
-**That's it!** Simple, one service, everything works.
 
 ### Step 1: Deploy Your Agent
 
@@ -157,20 +133,20 @@ railway link
 railway up
 ```
 
-**⚠️ This will fail** because OPENAI_API_KEY is missing - that's expected! This step creates the service.
+This will fail because OPENAI_API_KEY is missing - that's expected! This step creates the service.
 
 ### Step 2: Add Environment Variables
 
 Now add your OpenAI API key so the agent can work.
 
-**Option A: Via Railway Dashboard (Easier)**
+**Option A: Via Railway Dashboard**
 1. Go to [railway.app](https://railway.app)
 2. Click your project → Click your service
 3. Go to **Variables** tab
 4. Click **+ New Variable**
 5. Add `OPENAI_API_KEY` with your key value
 6. (Optional) Add `SERPER_API_KEY` for web search tool
-7. Railway automatically redeploys!
+7. Railway automatically redeploys
 
 **Option B: Via CLI**
 ```bash
@@ -184,17 +160,15 @@ railway variables --set "SERPER_API_KEY=your-serper-key"
 railway up
 ```
 
-
-
 **What Railway does:**
 1. Reads `railway.json` for config
 2. Installs packages from `requirements.txt`
 3. Starts your FastAPI server
 4. Gives you a public URL
 
-### Step 3: Add Volume (For Memory!)
+### Step 3: Add Volume (For Memory)
 
-**⚠️ Without this, your agent forgets everything when it restarts!**
+Without this, your agent forgets everything when it restarts.
 
 **Where to do it:**
 1. Go to Railway dashboard → Your service
@@ -206,7 +180,7 @@ railway up
 - **Mount Path:** `/root/.local/share/crewai`
 - **Size:** 1 GB
 
-**Done!** Railway redeploys automatically and memory now persists. ✅
+Railway redeploys automatically and memory now persists.
 
 ### Step 4: Get Your Public URL
 
@@ -226,11 +200,9 @@ railway domain
 https://day-3-agent-production.up.railway.app
 ```
 
-Save this URL - you'll use it to interact with your agent!
+Save this URL - you'll use it to interact with your agent.
 
----
-
-## 🧪 Testing Your Deployed Agent
+## Testing Your Deployed Agent
 
 ### Test 1: Health Check
 
@@ -278,7 +250,7 @@ curl -X POST https://your-app.up.railway.app/query \
   -d '{"question": "What is my name?"}'
 ```
 
-**Expected:** Agent should remember your name from the first request!
+**Expected:** Agent should remember your name from the first request.
 
 ### Test 4: Interactive Documentation
 
@@ -292,9 +264,7 @@ This shows **Swagger UI** - an interactive API documentation where you can:
 - Test queries directly in the browser
 - View request/response schemas
 
----
-
-## 🔍 Understanding the Code
+## Understanding the Code
 
 ### Key Components
 
@@ -324,7 +294,7 @@ my_agent_twin = Agent(
     llm=llm,
 )
 ```
-Same agent from Day 2, with memory and tools!
+Same agent from Day 2, with memory and tools.
 
 #### 4. API Endpoints (lines 180-260)
 ```python
@@ -333,16 +303,14 @@ async def query_agent(request: QueryRequest):
     crew = Crew(
         agents=[my_agent_twin],
         tasks=[task],
-        memory=True  # Memory enabled!
+        memory=True  # Memory enabled
     )
     result = crew.kickoff()
     return {"answer": result}
 ```
 Handles incoming HTTP requests and runs your agent.
 
----
-
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 ### Problem: Deployment fails during build
 
@@ -355,7 +323,7 @@ Handles incoming HTTP requests and runs your agent.
 
 **Common build errors:**
 
-#### 1. **Package not found** (Most common for students!)
+#### 1. Package not found
 ```
 ERROR: Could not find a version that satisfies the requirement serper>=0.1.0
 ERROR: No matching distribution found for serper>=0.1.0
@@ -368,14 +336,14 @@ ERROR: No matching distribution found for serper>=0.1.0
 - ❌ `serper>=0.1.0` (doesn't exist!)
 - ✅ Already included in `crewai-tools` - no separate package needed
 
-#### 2. **Python version mismatch**
+#### 2. Python version mismatch
 ```
 ERROR: Ignored the following versions that require a different python version
 ```
 
 **Fix:** Check package compatibility with Python 3.10+
 
-#### 3. **Missing OPENAI_API_KEY** (After successful build)
+#### 3. Missing OPENAI_API_KEY (After successful build)
 ```
 Application error: Missing API key
 ```
@@ -429,9 +397,7 @@ lsof -ti:8000 | xargs kill -9
 uvicorn main:app --port 8001
 ```
 
----
-
-## 💰 Cost Considerations
+## Cost Considerations
 
 ### Railway Pricing
 
@@ -452,9 +418,7 @@ uvicorn main:app --port 8001
 3. **Monitor usage:** Check Railway dashboard regularly
 4. **Limit memory size:** ChromaDB grows over time
 
----
-
-## 📊 Monitoring Your Agent
+## Monitoring Your Agent
 
 ### View Logs
 
@@ -494,21 +458,17 @@ Visit Railway dashboard:
 - Request counts
 - Error rates
 
----
+## What You Learned
 
-## 🎓 What You Learned
+- **FastAPI Basics:** How to create REST APIs with Python  
+- **HTTP/REST:** How web services communicate  
+- **Cloud Deployment:** Using Railway CLI  
+- **Microservices:** Separating database from application  
+- **Environment Variables:** Managing secrets in production  
+- **API Testing:** Using curl and Swagger UI  
+- **Memory Persistence:** Keeping data across deployments
 
-✅ **FastAPI Basics:** How to create REST APIs with Python  
-✅ **HTTP/REST:** How web services communicate  
-✅ **Cloud Deployment:** Using Railway CLI  
-✅ **Microservices:** Separating database from application  
-✅ **Environment Variables:** Managing secrets in production  
-✅ **API Testing:** Using curl and Swagger UI  
-✅ **Memory Persistence:** Keeping data across deployments  
-
----
-
-## 🚀 Next Steps
+## Next Steps
 
 ### Day 4: Multi-Agent Coordination
 
@@ -525,18 +485,14 @@ Now that your agent is deployed, you can:
 4. **Custom domain:** Use your own domain name
 5. **Monitoring:** Add logging and error tracking
 
----
-
-## 📚 Resources
+## Resources
 
 - [Railway Documentation](https://docs.railway.app/)
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [CrewAI Memory Docs](https://docs.crewai.com/concepts/memory)
 - [ChromaDB Documentation](https://docs.trychroma.com/)
 
----
-
-## ✅ Day 3 Checklist
+## Checklist
 
 Before moving to Day 4:
 
@@ -548,11 +504,9 @@ Before moving to Day 4:
 - [ ] Memory persistence tested
 - [ ] Public URL accessible from terminal
 
----
+## Appendix: Advanced Approach - Two-Service Architecture
 
-## 📚 Appendix: Advanced Approach - Two-Service Architecture
-
-**For advanced students** who want to learn microservices architecture, you can deploy ChromaDB as a separate service:
+For advanced students who want to learn microservices architecture, you can deploy ChromaDB as a separate service:
 
 ### Why Use Two Services?
 
@@ -581,8 +535,4 @@ Before moving to Day 4:
    - No authentication needed between services
    - Services communicate securely within project
 
-**Note:** This is more complex but teaches valuable microservices concepts!
-
----
-
-**🎉 Congratulations!** Your agent is now live on the internet and anyone can interact with it via HTTP!
+This is more complex but teaches valuable microservices concepts.

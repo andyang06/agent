@@ -1,10 +1,10 @@
-# 🚀 CrewAI Agent Interface
+# CrewAI Agent Interface
 
 **All-in-one package:** Frontend + Backend combined for easy deployment!
 
 Students can share and chat with each other's CrewAI agents through a beautiful web interface.
 
-## 🎯 What This Is
+## What This Is
 
 A combined Next.js frontend and Express backend in one deployable package:
 - **Backend:** REST API that stores agent URLs in `agents.json`
@@ -13,7 +13,7 @@ A combined Next.js frontend and Express backend in one deployable package:
 
 ---
 
-## ⚡ Quick Start (Local Development)
+## Quick Start (Local Development)
 
 ### Option 1: Run Both Together
 
@@ -41,7 +41,7 @@ npm run dev:frontend
 
 ---
 
-## 🚀 Deploy to Railway (One Command!)
+## Deploy to Railway (One Command!)
 
 ```bash
 cd interface
@@ -54,7 +54,7 @@ That's it! Railway will:
 1. Install dependencies
 2. Build Next.js frontend
 3. Start Express backend
-4. Serve everything on one URL! ✨
+4. Serve everything on one URL!
 
 Your URL will look like:
 ```
@@ -63,7 +63,7 @@ https://crewai-interface.up.railway.app
 
 ---
 
-## 📋 How Students Use It
+## How Students Use It
 
 1. **Open the deployed URL**
    ```
@@ -82,7 +82,7 @@ https://crewai-interface.up.railway.app
 
 ---
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 interface/
@@ -101,7 +101,7 @@ interface/
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
 All API routes are under `/api` prefix:
 
@@ -117,7 +117,7 @@ curl https://your-app.up.railway.app/api/agents
 
 ---
 
-## 🛠️ Development Commands
+## Development Commands
 
 ```bash
 # Install dependencies
@@ -141,7 +141,7 @@ npm start
 
 ---
 
-## 🌐 Environment Variables
+## Environment Variables
 
 No environment variables needed! Everything works out of the box.
 
@@ -151,7 +151,7 @@ The frontend automatically detects:
 
 ---
 
-## 📊 How It Works
+## How It Works
 
 ### Development Mode
 ```
@@ -170,11 +170,11 @@ Browser → https://your-app.railway.app
     └─ /* → Frontend UI
 ```
 
-Everything served from one domain! No CORS issues. ✨
+Everything served from one domain! No CORS issues.
 
 ---
 
-## 🎓 For Teachers
+## For Teachers
 
 ### One-Time Setup:
 
@@ -197,7 +197,7 @@ Everything served from one domain! No CORS issues. ✨
 
 ---
 
-## 🎮 For Students
+## For Students
 
 ### Add Your Agent:
 
@@ -217,11 +217,11 @@ Everything served from one domain! No CORS issues. ✨
 2. Type your question
 3. Press Enter
 4. See the response!
-5. Click "← Back" to try another agent
+5. Click "Back" to try another agent
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Backend Configuration
 
@@ -239,37 +239,37 @@ Edit `app/page.tsx`:
 
 ---
 
-## 💡 Key Features
+## Key Features
 
-### ✅ Easy Deployment
+### Easy Deployment
 - One command to deploy
 - No environment variables needed
 - Works on Railway, Render, etc.
 
-### ✅ Simple Architecture
+### Simple Architecture
 - Backend serves API under `/api`
 - Frontend handles all other routes
 - No CORS issues!
 
-### ✅ Persistent Storage
+### Persistent Storage
 - `agents.json` stores all data
 - Survives restarts with Railway Volume
 
-### ✅ Beautiful UI
+### Beautiful UI
 - Modern, responsive design
 - Mobile-friendly
 - Smooth animations
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Can't Add Agent
 
 **Check URL format:**
-- ✅ `https://agent.up.railway.app`
-- ❌ `agent.up.railway.app` (missing https://)
-- ❌ `https://agent.up.railway.app/` (trailing slash)
+- Correct: `https://agent.up.railway.app`
+- Wrong: `agent.up.railway.app` (missing https://)
+- Wrong: `https://agent.up.railway.app/` (trailing slash)
 
 ### Can't Connect to Agent
 
@@ -300,7 +300,7 @@ Look for errors in startup or API calls.
 
 ---
 
-## 📈 Scaling
+## Scaling
 
 ### Add Railway Volume (For Persistence)
 
@@ -312,11 +312,11 @@ To keep `agents.json` across deployments:
    - **Mount Path:** `/app/agents.json`
    - **Size:** 1 GB
 
-Now agents persist even after redeployments! ✅
+Now agents persist even after redeployments!
 
 ---
 
-## 🎨 Customization
+## Customization
 
 ### Change UI Colors
 
@@ -343,23 +343,23 @@ app.get('/api/stats', async (req, res) => {
 
 Edit `app/page.tsx`:
 ```tsx
-content: `👋 Hello! I'm ${agent.name}. Ask me anything!`
+content: `Hello! I'm ${agent.name}. Ask me anything!`
 ```
 
 ---
 
-## 💰 Cost
+## Cost
 
 ### Railway Deployment
 - **Free Tier:** $5 credit/month
 - **Usage:** ~$3-5/month
 - **Volume:** ~$0.25/GB/month
 
-**Total:** ~$5/month or FREE with Railway credits! ✅
+**Total:** ~$5/month or FREE with Railway credits!
 
 ---
 
-## 📚 Tech Stack
+## Tech Stack
 
 - **Frontend:** Next.js 14, React, TypeScript, Tailwind CSS
 - **Backend:** Express.js, Node.js
@@ -368,34 +368,34 @@ content: `👋 Hello! I'm ${agent.name}. Ask me anything!`
 
 ---
 
-## ✅ What's Included
+## What's Included
 
-- ✅ Complete frontend UI
-- ✅ Complete backend API
-- ✅ Railway deployment config
-- ✅ Development setup
-- ✅ TypeScript support
-- ✅ Tailwind CSS styling
-- ✅ Error handling
-- ✅ URL validation
-- ✅ CORS handled
-- ✅ Responsive design
+- Complete frontend UI
+- Complete backend API
+- Railway deployment config
+- Development setup
+- TypeScript support
+- Tailwind CSS styling
+- Error handling
+- URL validation
+- CORS handled
+- Responsive design
 
 ---
 
-## 🎉 Success!
+## Success!
 
 When working correctly:
 
-1. ✅ Deploy to Railway
-2. ✅ Get public URL
-3. ✅ Students add their agents
-4. ✅ Everyone can chat with all agents
-5. ✅ No separate frontend/backend deployments needed!
+1. Deploy to Railway
+2. Get public URL
+3. Students add their agents
+4. Everyone can chat with all agents
+5. No separate frontend/backend deployments needed!
 
 ---
 
-## 🆘 Need Help?
+## Need Help?
 
 1. **Check Railway logs:** `railway logs`
 2. **Test API directly:** `curl https://your-app.railway.app/api/health`
@@ -404,7 +404,7 @@ When working correctly:
 
 ---
 
-## 📖 Additional Resources
+## Additional Resources
 
 - [Railway Docs](https://docs.railway.app/)
 - [Next.js Docs](https://nextjs.org/docs)
@@ -412,6 +412,6 @@ When working correctly:
 
 ---
 
-**Built for MIT IAP NANDA Course 2026** 🚀
+**Built for MIT IAP NANDA Course 2026**
 
-**One deployment. Two services. Zero hassle.** ✨
+**One deployment. Two services. Zero hassle.**

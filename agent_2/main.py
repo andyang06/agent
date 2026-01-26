@@ -115,7 +115,7 @@ class HealthResponse(BaseModel):
 # ==============================================================================
 
 # Central registry URL
-REGISTRY_URL = "https://nanda-testbed-production.up.railway.app/api/agents"
+REGISTRY_URL = "https://nest.projectnanda.org/api/agents"
 
 # Store known agents - fetched from central registry
 KNOWN_AGENTS: Dict[str, str] = {
@@ -264,15 +264,21 @@ async def fetch_agents_from_registry():
             response.raise_for_status()
             data = response.json()
             
+            # Handle both old and new API formats
             agents = data.get("agents", [])
+            if not agents and isinstance(data, list):
+                # New API might return list directly
+                agents = data
+            
             print(f"📥 Fetched {len(agents)} agents from registry")
             
             # Update KNOWN_AGENTS with username -> A2A endpoint mapping
             for agent in agents:
-                username = agent.get("username")
-                url = agent.get("url", "")
+                # Support both old (username/url) and new (agent_id/endpoint) formats
+                username = agent.get("agent_id") or agent.get("username")
+                url = agent.get("endpoint") or agent.get("url", "")
                 
-                # Skip if no username (old format) or if it's this agent
+                # Skip if no username or if it's this agent
                 if not username or username == MY_AGENT_USERNAME:
                     continue
                 
