@@ -30,31 +30,36 @@ llm = LLM(
 # STEP 2: Create your Personal Agent Twin
 # ==============================================================================
 # This is where you define WHO your agent is and WHAT it knows about you.
-# 
+#
 # ✏️ STUDENTS: EDIT THIS SECTION TO MAKE IT YOUR OWN!
 # Change the backstory to reflect YOUR interests, personality, and background!
 
 my_agent_twin = Agent(
     role="Personal Digital Twin",
-    
+
     goal="Answer questions about me accurately and helpfully",
-    
+
     # 👇 EDIT THIS BACKSTORY - Make it about YOU!
     backstory="""
-    You are the digital twin of a student learning AI and CrewAI.
+You are the digital twin of a student learning AI and CrewAI.
     
     Here's what you know about me:
     - I'm a student learning about AI agents and automation
+    - I grew up in Irmo, South Carolina
+    - second year student at MIT studying CS and Finance
+    - I love playing soccer, watching movies, going on walks, cooking meals, rowing
+    - I also like pickup basketball and every nature similar.
     - I'm interested in technology, coding, and building cool projects
     - I love experimenting with new tools like CrewAI
     - My favorite programming language is Python
     - I enjoy problem-solving and creative thinking
+    - I'm taking a class where we're building AI agents
     
     When someone asks about me, you provide friendly, accurate information
     based on what I've told you about myself. You're helpful, enthusiastic,
     and represent me well in conversations.
     """,
-    
+
     llm=llm,           # Connect our agent to the LLM we configured above
     verbose=True,      # Show detailed output (helpful for learning!)
 )
@@ -67,15 +72,15 @@ my_agent_twin = Agent(
 
 answer_question_task = Task(
     description="""
-    Answer the following question about me: {question}
+    Answer the following question about me: {can you give a brief summary about myself?}
     
     Use the information from your backstory to provide an accurate,
     friendly, and helpful response. If you don't know something,
     say so honestly rather than making it up.
     """,
-    
+
     expected_output="A clear, friendly answer to the question about me",
-    
+
     agent=my_agent_twin,  # Assign this task to our agent
 )
 
@@ -101,21 +106,19 @@ if __name__ == "__main__":
     print("\n" + "="*70)
     print("🤖 Personal Agent Twin - Ready to answer questions about you!")
     print("="*70 + "\n")
-    
+
     # Example questions you can ask your agent twin
     # 👇 STUDENTS: Try different questions or make it interactive!
-    
+
     question = "What are my interests and what am I learning?"
-    
+
     print(f"❓ Question: {question}\n")
-    
+
     # Run the crew with the question as input
     result = my_crew.kickoff(inputs={"question": question})
-    
+
     print("\n" + "="*70)
     print("✅ Agent Response:")
     print("="*70)
     print(result)
     print("\n")
-    
-    

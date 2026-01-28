@@ -20,9 +20,9 @@ interface Agent {
 }
 
 // In development: use localhost:3001, in production: use same domain
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 
-  (typeof window !== 'undefined' && window.location.hostname === 'localhost' 
-    ? 'http://localhost:3001' 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ||
+  (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+    ? 'http://localhost:3001'
     : (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3001'))
 
 const API_BASE = `${BACKEND_URL}/api`
@@ -35,12 +35,12 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [showAddAgent, setShowAddAgent] = useState(false)
   const [showAgentList, setShowAgentList] = useState(true)
-  
+
   const [newAgentUsername, setNewAgentUsername] = useState('')
   const [newAgentName, setNewAgentName] = useState('')
   const [newAgentUrl, setNewAgentUrl] = useState('')
   const [newAgentDescription, setNewAgentDescription] = useState('')
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const loadAgents = async () => {
@@ -193,7 +193,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="mb-12">
             <div className="flex items-center justify-between mb-2">
-              <h1 className="text-4xl font-semibold text-[#2D3142] tracking-tight">Agent Registry</h1>
+              <div>
+                <h1 className="text-4xl font-bold text-[#1e3a8a] tracking-tight">E.D.I.T.H</h1>
+                <p className="text-sm text-[#3b82f6] font-medium mt-1">Enhanced Digital Intelligence & Tactical Helper</p>
+              </div>
               <div className="flex gap-3">
                 <button
                   onClick={loadAgents}
@@ -203,7 +206,7 @@ export default function Home() {
                 </button>
                 <button
                   onClick={() => setShowAddAgent(!showAddAgent)}
-                  className="px-4 py-2 text-sm font-medium text-white bg-[#6366F1] rounded-lg hover:bg-[#4F46E5] transition-all shadow-sm"
+                  className="px-4 py-2 text-sm font-medium text-white bg-[#3b82f6] rounded-lg hover:bg-[#2563eb] transition-all shadow-sm"
                 >
                   {showAddAgent ? 'Cancel' : 'Add Agent'}
                 </button>
@@ -346,9 +349,9 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setShowAgentList(true)}
-              className="text-[#6366F1] hover:text-[#4F46E5] font-medium text-sm transition-colors"
+              className="text-[#3b82f6] hover:text-[#2563eb] font-medium text-sm transition-colors"
             >
-              ← Back to Registry
+              ← Back to E.D.I.T.H
             </button>
             <div className="h-6 w-px bg-[#E5E7EB]"></div>
             <div>
@@ -388,7 +391,7 @@ export default function Home() {
               </div>
             </div>
           ))}
-          
+
           {isLoading && (
             <div className="flex justify-start">
               <div className="bg-white rounded-2xl px-5 py-4 border border-[#E5E7EB] shadow-sm">
@@ -400,7 +403,7 @@ export default function Home() {
               </div>
             </div>
           )}
-          
+
           <div ref={messagesEndRef} />
         </div>
       </div>

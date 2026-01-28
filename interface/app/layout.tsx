@@ -2,8 +2,8 @@ import './globals.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'CrewAI Agent Chat',
-  description: 'Chat with your deployed CrewAI agent',
+  title: 'E.D.I.T.H - Enhanced Digital Intelligence & Tactical Helper',
+  description: 'Your personal AI assistant, powered by advanced agent technology',
 }
 
 export default function RootLayout({
@@ -17,4 +17,3 @@ export default function RootLayout({
     </html>
   )
 }
-

@@ -1,18 +1,10 @@
 [
   {
-    "id": "1769269361644",
-    "username": "maria-agent",
-    "name": "Maria",
-    "url": "https://nanda-test-agent-production.up.railway.app",
-    "description": "",
-    "createdAt": "2026-01-24T15:42:41.644Z"
-  },
-  {
-    "id": "1769269793978",
-    "username": "test-agent",
-    "name": "Test",
-    "url": "https://test.com",
-    "description": "test",
-    "createdAt": "2026-01-24T15:49:53.978Z"
+    "id": "1738088400000",
+    "username": "edith",
+    "name": "E.D.I.T.H",
+    "url": "https://brave-magic-production-65d3.up.railway.app",
+    "description": "Enhanced Digital Intelligence & Tactical Helper - Your personal AI assistant with memory and advanced tools",
+    "createdAt": "2026-01-28T17:00:00.000Z"
   }
 ]
