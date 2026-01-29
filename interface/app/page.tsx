@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import EdithInterface from './edith-page'
 
 interface Message {
   id: string
@@ -20,14 +21,19 @@ interface Agent {
 }
 
 // In development: use localhost:3001, in production: use same domain
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ||
-  (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-    ? 'http://localhost:3001'
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 
+  (typeof window !== 'undefined' && window.location.hostname === 'localhost' 
+    ? 'http://localhost:3001' 
     : (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3001'))
 
 const API_BASE = `${BACKEND_URL}/api`
 
 export default function Home() {
+  // Use the JARVIS-style EDITH interface
+  return <EdithInterface />
+}
+
+function ClassicInterface() {
   const [agents, setAgents] = useState<Agent[]>([])
   const [currentAgent, setCurrentAgent] = useState<Agent | null>(null)
   const [messages, setMessages] = useState<Message[]>([])

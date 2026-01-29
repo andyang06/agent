@@ -1,4 +1,4 @@
-// File: /Users/mariagorskikh/CrewAI-nanda/interface/app/layout.tsx
+// File: /Users/andyyang/5-day-course/interface/app/layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
