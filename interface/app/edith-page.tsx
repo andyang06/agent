@@ -84,7 +84,7 @@ export default function EdithInterface() {
   const [systemStats, setSystemStats] = useState<SystemStats>({
     cpu: 0,
     memory: 0,
-    temperature: 25.2
+    temperature: 77  // Fahrenheit
   })
   const [currentTime, setCurrentTime] = useState(new Date())
   const [weather, setWeather] = useState({ 
@@ -117,11 +117,11 @@ export default function EdithInterface() {
               const location = data.nearest_area[0]
               
               setWeather({
-                temp: parseFloat(current.temp_C),
+                temp: parseFloat(current.temp_F),  // Fahrenheit
                 condition: current.weatherDesc[0].value,
                 location: `${location.areaName[0].value}, ${location.country[0].value}`,
                 humidity: parseInt(current.humidity),
-                wind: parseFloat(current.windspeedKmph)
+                wind: parseFloat(current.windspeedMiles)  // mph
               })
             },
             (error) => {
@@ -135,13 +135,13 @@ export default function EdithInterface() {
         }
       } catch (error) {
         console.error('Weather fetch error:', error)
-        // Fallback weather
+        // Fallback weather (in Fahrenheit)
         setWeather({
-          temp: 20,
+          temp: 68,
           condition: 'Clear',
           location: 'Location unavailable',
           humidity: 50,
-          wind: 10
+          wind: 6
         })
       }
     }
@@ -154,11 +154,11 @@ export default function EdithInterface() {
         const location = data.nearest_area[0]
         
         setWeather({
-          temp: parseFloat(current.temp_C),
+          temp: parseFloat(current.temp_F),  // Fahrenheit
           condition: current.weatherDesc[0].value,
           location: `${location.areaName[0].value}, ${location.country[0].value}`,
           humidity: parseInt(current.humidity),
-          wind: parseFloat(current.windspeedKmph)
+          wind: parseFloat(current.windspeedMiles)  // mph
         })
       } catch (error) {
         console.error('Weather fetch error:', error)
@@ -183,7 +183,7 @@ export default function EdithInterface() {
       setSystemStats((prev) => ({
         cpu: Math.floor(Math.random() * 40) + 20,
         memory: Math.floor(Math.random() * 30) + 40,
-        temperature: weather.temp || 25.2
+        temperature: weather.temp || 77  // Default to ~77°F (25°C)
       }))
     }, 2000)
     return () => clearInterval(interval)
@@ -263,7 +263,7 @@ export default function EdithInterface() {
         </div>
         <div className="header-right">
           <span className="weather-info">
-            <WeatherIcon className="weather-icon" /> {weather.temp.toFixed(1)}°C {weather.location}
+            <WeatherIcon className="weather-icon" /> {weather.temp.toFixed(1)}°F {weather.location}
           </span>
         </div>
       </header>
@@ -308,7 +308,7 @@ export default function EdithInterface() {
               <h3>Weather</h3>
             </div>
             <div className="weather-display">
-              <div className="weather-temp">{weather.temp.toFixed(1)}°C</div>
+              <div className="weather-temp">{weather.temp.toFixed(1)}°F</div>
               <div className="weather-condition">{weather.condition}</div>
               <div className="weather-location">{weather.location}</div>
               <div className="weather-details">
@@ -318,7 +318,7 @@ export default function EdithInterface() {
                 </div>
                 <div className="weather-detail-item">
                   <span className="weather-detail-label">Wind</span>
-                  <span className="weather-detail-value">{weather.wind} km/h</span>
+                  <span className="weather-detail-value">{weather.wind.toFixed(1)} mph</span>
                 </div>
               </div>
             </div>

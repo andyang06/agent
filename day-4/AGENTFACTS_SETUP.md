@@ -16,11 +16,11 @@ Edit `main.py` (lines 108-116) with your info:
 # ==============================================================================
 # 👇 EDIT THESE VALUES - This is your agent's public information
 
-MY_AGENT_USERNAME = "personal-agent-twin"  # 👈 CHANGE THIS: Your unique username
-MY_AGENT_NAME = "Personal Agent Twin"      # 👈 CHANGE THIS: Human-readable name
-MY_AGENT_DESCRIPTION = "AI agent with memory and tools for research and assistance"  # 👈 CHANGE THIS
-MY_AGENT_PROVIDER = "NANDA Student"        # 👈 CHANGE THIS: Your name
-MY_AGENT_PROVIDER_URL = "https://nanda.mit.edu"  # 👈 CHANGE THIS: Your website
+MY_AGENT_USERNAME = "edith"  # 👈 CHANGE THIS: Your unique username
+MY_AGENT_NAME = "E.D.I.T.H"      # 👈 CHANGE THIS: Human-readable name
+MY_AGENT_DESCRIPTION = "AI agent with memory and tools for research, assistance, daily tasks, questions, help with everything"  # 👈 CHANGE THIS
+MY_AGENT_PROVIDER = "Andy Yang"        # 👈 CHANGE THIS: Your name
+MY_AGENT_PROVIDER_URL = " https://frontend-production-0617.up.railway.app"  # 👈 CHANGE THIS: Your website
 
 # Optional - usually don't need to change these
 MY_AGENT_ID = MY_AGENT_USERNAME  # Uses username as ID

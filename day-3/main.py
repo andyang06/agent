@@ -121,7 +121,7 @@ class ImageGenerationTool(BaseTool):
     name: str = "image_generator"
     description: str = "Generates images using DALL-E 3"
     args_schema: Type[BaseModel] = ImageGenerationInput
-    
+
     def _run(self, prompt: str) -> str:
         try:
             client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -139,7 +139,7 @@ class ImageAnalysisTool(BaseTool):
     name: str = "analyze_image"
     description: str = "Analyzes images using GPT-4 Vision. Can describe images, identify objects, read text (OCR)."
     args_schema: Type[BaseModel] = ImageAnalysisInput
-    
+
     def _run(self, image_url: str, question: str = "What's in this image?") -> str:
         try:
             client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -160,7 +160,7 @@ class SpeechToTextTool(BaseTool):
     name: str = "transcribe_audio"
     description: str = "Converts speech to text using Whisper"
     args_schema: Type[BaseModel] = SpeechToTextInput
-    
+
     def _run(self, audio_file_path: str) -> str:
         try:
             client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -179,7 +179,7 @@ class TextToSpeechTool(BaseTool):
     name: str = "text_to_speech"
     description: str = "Converts text to speech audio"
     args_schema: Type[BaseModel] = TextToSpeechInput
-    
+
     def _run(self, text: str, voice: str = "nova") -> str:
         try:
             client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -198,7 +198,7 @@ class PDFAnalysisTool(BaseTool):
     name: str = "analyze_pdf"
     description: str = "Extracts text from PDF documents"
     args_schema: Type[BaseModel] = PDFAnalysisInput
-    
+
     def _run(self, pdf_path: str) -> str:
         try:
             import pdfplumber
