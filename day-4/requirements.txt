@@ -33,3 +33,6 @@ chromadb>=0.4.0
 # Common dependencies
 aiohttp>=3.9.0                     # Async HTTP for A2A
 
+# Multimodal capabilities
+openai>=1.0.0                      # For DALL-E, GPT-4 Vision, Whisper, TTS
+pdfplumber>=0.10.0                 # For PDF analysis

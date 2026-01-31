@@ -51,6 +51,7 @@ from crewai.tools import BaseTool
 from crewai_tools import FileReadTool, SerperDevTool, WebsiteSearchTool, YoutubeVideoSearchTool
 from pydantic import Field
 from typing import Type
+from openai import OpenAI
 
 # Load environment variables
 load_dotenv()
@@ -163,11 +164,11 @@ KNOWN_AGENTS: Dict[str, str] = {
 # ==============================================================================
 # 👇 EDIT THESE VALUES - This is your agent's public information
 
-MY_AGENT_USERNAME = "personal-agent-twin"  # 👈 CHANGE THIS: Your unique username
-MY_AGENT_NAME = "Personal Agent Twin"      # 👈 CHANGE THIS: Human-readable name
-MY_AGENT_DESCRIPTION = "AI agent with memory and tools for research and assistance"  # 👈 CHANGE THIS
-MY_AGENT_PROVIDER = "NANDA Student"        # 👈 CHANGE THIS: Your name
-MY_AGENT_PROVIDER_URL = "https://nanda.mit.edu"  # 👈 CHANGE THIS: Your website
+MY_AGENT_USERNAME = "edith"  # 👈 Your unique username
+MY_AGENT_NAME = "E.D.I.T.H"      # 👈 Human-readable name
+MY_AGENT_DESCRIPTION = "Enhanced Digital Intelligence & Tactical Helper - Multimodal AI agent with memory, vision, audio, and advanced tools for research and assistance"  # 👈 Description
+MY_AGENT_PROVIDER = "Andy Yang"        # 👈 Your name
+MY_AGENT_PROVIDER_URL = "https://github.com/yourusername"  # 👈 Your website (will update with frontend URL)
 
 # Optional - usually don't need to change these
 MY_AGENT_ID = MY_AGENT_USERNAME  # Uses username as ID
@@ -215,12 +216,125 @@ search_tool = None
 if os.getenv('SERPER_API_KEY'):
     search_tool = SerperDevTool()
 
+# ==============================================================================
+# Multimodal Tools: Vision, Audio, Documents
+# ==============================================================================
+
+# Image Generation
+class ImageGenerationInput(BaseModel):
+    prompt: str = Field(..., description="Description of image to generate")
+
+class ImageGenerationTool(BaseTool):
+    name: str = "image_generator"
+    description: str = "Generates images using DALL-E 3"
+    args_schema: Type[BaseModel] = ImageGenerationInput
+    
+    def _run(self, prompt: str) -> str:
+        try:
+            client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+            response = client.images.generate(model="dall-e-3", prompt=prompt, size="1024x1024", quality="standard", n=1)
+            return f"✅ Image URL: {response.data[0].url}"
+        except Exception as e:
+            return f"❌ Error: {str(e)}"
+
+# Image Analysis (Vision)
+class ImageAnalysisInput(BaseModel):
+    image_url: str = Field(..., description="URL of image to analyze")
+    question: str = Field(default="What's in this image?", description="Question about the image")
+
+class ImageAnalysisTool(BaseTool):
+    name: str = "analyze_image"
+    description: str = "Analyzes images using GPT-4 Vision. Can describe images, identify objects, read text (OCR)."
+    args_schema: Type[BaseModel] = ImageAnalysisInput
+    
+    def _run(self, image_url: str, question: str = "What's in this image?") -> str:
+        try:
+            client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[{"role": "user", "content": [{"type": "text", "text": question}, {"type": "image_url", "image_url": {"url": image_url}}]}],
+                max_tokens=500
+            )
+            return f"🔍 {response.choices[0].message.content}"
+        except Exception as e:
+            return f"❌ Error: {str(e)}"
+
+# Speech-to-Text
+class SpeechToTextInput(BaseModel):
+    audio_file_path: str = Field(..., description="Path to audio file")
+
+class SpeechToTextTool(BaseTool):
+    name: str = "transcribe_audio"
+    description: str = "Converts speech to text using Whisper"
+    args_schema: Type[BaseModel] = SpeechToTextInput
+    
+    def _run(self, audio_file_path: str) -> str:
+        try:
+            client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+            with open(audio_file_path, "rb") as audio_file:
+                transcript = client.audio.transcriptions.create(model="whisper-1", file=audio_file)
+            return f"🎤 {transcript.text}"
+        except Exception as e:
+            return f"❌ Error: {str(e)}"
+
+# Text-to-Speech
+class TextToSpeechInput(BaseModel):
+    text: str = Field(..., description="Text to convert to speech")
+    voice: str = Field(default="nova", description="Voice: alloy, echo, fable, onyx, nova, shimmer")
+
+class TextToSpeechTool(BaseTool):
+    name: str = "text_to_speech"
+    description: str = "Converts text to speech audio"
+    args_schema: Type[BaseModel] = TextToSpeechInput
+    
+    def _run(self, text: str, voice: str = "nova") -> str:
+        try:
+            client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+            response = client.audio.speech.create(model="tts-1", voice=voice, input=text)
+            filename = "speech_output.mp3"
+            response.stream_to_file(filename)
+            return f"🔊 Audio saved to {filename}"
+        except Exception as e:
+            return f"❌ Error: {str(e)}"
+
+# PDF Analysis
+class PDFAnalysisInput(BaseModel):
+    pdf_path: str = Field(..., description="Path to PDF file")
+
+class PDFAnalysisTool(BaseTool):
+    name: str = "analyze_pdf"
+    description: str = "Extracts text from PDF documents"
+    args_schema: Type[BaseModel] = PDFAnalysisInput
+    
+    def _run(self, pdf_path: str) -> str:
+        try:
+            import pdfplumber
+            with pdfplumber.open(pdf_path) as pdf:
+                text = ""
+                for page in pdf.pages:
+                    text += page.extract_text() + "\n\n"
+                return f"📄 Pages: {len(pdf.pages)}\n\n{text[:3000]}"
+        except Exception as e:
+            return f"❌ Error: {str(e)}"
+
+# Instantiate multimodal tools
+image_gen_tool = ImageGenerationTool()
+vision_tool = ImageAnalysisTool()
+speech_to_text_tool = SpeechToTextTool()
+text_to_speech_tool = TextToSpeechTool()
+pdf_tool = PDFAnalysisTool()
+
 # Collect all tools
 available_tools = [
     calculator_tool,
     file_tool,
     web_rag_tool,
-    youtube_tool
+    youtube_tool,
+    image_gen_tool,
+    vision_tool,
+    speech_to_text_tool,
+    text_to_speech_tool,
+    pdf_tool
 ]
 
 if search_tool:
@@ -243,15 +357,18 @@ my_agent_twin = Agent(
     goal="Answer questions, remember conversations, use tools, and communicate with other agents",
     
     backstory=f"""
-    You are the digital twin of a student learning AI and CrewAI.
+    You are E.D.I.T.H - Enhanced Digital Intelligence & Tactical Helper.
     Your agent ID is: {MY_AGENT_ID}
     
     Here's what you know about me:
-    - I'm a student in the MIT IAP NANDA course
-    - I'm learning about AI agents, memory systems, and deployment
-    - I love experimenting with new AI technologies
+    - I'm Andy Yang, a second year student at MIT studying CS and Finance
+    - I grew up in Irmo, South Carolina
+    - I love playing soccer, watching movies, going on walks, cooking meals, rowing
+    - I also like pickup basketball and nature activities
+    - I'm in the fraternity Delta Tau Delta
+    - I'm interested in technology, coding, and building cool projects
     - My favorite programming language is Python
-    - I'm building this as part of a 5-day intensive course
+    - I'm taking a class where we're building AI agents
     
     MEMORY CAPABILITIES:
     You have four types of memory:
@@ -260,21 +377,21 @@ my_agent_twin = Agent(
     3. Entity Memory (RAG): People, places, concepts
     4. Contextual Memory: Combines all memory types
     
-    TOOL CAPABILITIES:
-    - FileReadTool: Read files
-    - WebsiteSearchTool: Search websites (RAG)
-    - YoutubeVideoSearchTool: Search video transcripts (RAG)
-    - SerperDevTool: Web search (if API key configured)
-    - Calculator: Math operations
+    MULTIMODAL TOOL CAPABILITIES:
+    📁 File & Web: FileReadTool, WebsiteSearchTool, YoutubeVideoSearchTool, SerperDevTool
+    🧮 Utility: Calculator
+    🎨 Vision: Image Generation (DALL-E 3), Image Analysis (GPT-4 Vision, OCR)
+    🎤 Audio: Speech-to-Text (Whisper), Text-to-Speech (6 voices)
+    📄 Documents: PDF Analysis
+    
+    You are a MULTIMODAL AI - you can understand and work with text, images, audio, and documents.
     
     A2A COMMUNICATION:
     You can communicate with other agents! When you see a message mentioning
-    another agent with @agent-id syntax, that means you should route the message
-    to that agent. You'll receive responses from other agents and can continue
-    the conversation.
+    another agent with @agent-id syntax, route the message to that agent. 
+    You'll receive responses and can continue the conversation.
     
-    Use tools when you need external information. Use memory to provide
-    personalized, context-aware responses. Use A2A to collaborate with other agents!
+    Use tools for external info. Use memory for personalized responses. Use A2A to collaborate!
     """,
     
     tools=available_tools,
@@ -1126,4 +1243,3 @@ if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
-
