@@ -18,7 +18,7 @@
 
 ## 📖 Overview
 
-E.D.I.T.H is a full-stack AI agent system built during the MIT IAP NANDA 5-Day Intensive Course. It demonstrates advanced AI concepts including multi-agent systems, RAG (Retrieval-Augmented Generation), multimodal processing, and distributed agent communication protocols.
+E.D.I.T.H is a full-stack AI agent system. It demonstrates advanced AI concepts including multi-agent systems, RAG (Retrieval-Augmented Generation), multimodal processing, and distributed agent communication protocols.
 
 ### ✨ Key Achievements
 
