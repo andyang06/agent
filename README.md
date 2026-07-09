@@ -244,35 +244,6 @@ curl -X POST https://brave-magic-production-65d3.up.railway.app/a2a \
 
 ---
 
-## 🎓 Learning Journey (5-Day Course)
-
-### Day 1: Foundation
-- Built basic agent loop with CrewAI
-- Learned agent, task, and crew concepts
-- Set up GitHub repository
-
-### Day 2: Intelligence
-- Added 4-type memory system (RAG-based)
-- Integrated 9 specialized tools
-- Implemented multimodal capabilities
-
-### Day 3: Production
-- Wrapped agent in FastAPI
-- Deployed to Railway with CI/CD
-- Exposed REST API endpoints
-
-### Day 4: Collaboration
-- Implemented A2A communication protocol
-- Added AgentFacts for capability discovery
-- Integrated with central agent registry
-
-### Day 5: Optimization
-- Enhanced agent coordination
-- Optimized response speed vs. accuracy
-- Prepared for agent evaluation
-
----
-
 ## 🌟 Key Highlights
 
 ### Technical Skills Demonstrated
